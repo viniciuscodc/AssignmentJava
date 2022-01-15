@@ -1,5 +1,6 @@
 package com.assignment.restAPI.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.assignment.restAPI.dao.EventDAO;
+import com.assignment.restAPI.entity.Event;
 import com.assignment.restAPI.entity.Payload;
 import com.assignment.restAPI.entity.Record;
 
@@ -23,15 +25,22 @@ public class PayloadServiceImp implements PayloadService {
 		// Should I use a mapper?
 		List<Record> records = payload.getRecords();
 		
+		List<Event> events = new ArrayList();
+		
 		for(Record record : records){
-			
+					
 			record.getEvent().parallelStream().forEach(recordEv -> {
-				
-				recordEv.setTransId(record.getTransId());
-				recordEv.setTransTms(record.getTransTms());
-				
-				eventDAO.saveEvent(recordEv); 
-			});
+			
+			recordEv.setTransId(record.getTransId());
+			recordEv.setTransTms(record.getTransTms());
+			
+			events.add(recordEv);
+		});		
         }
+		
+		// Database save can't be parallel
+		for(Event event : events){
+			eventDAO.saveEvent(event); 
+		}	
 	}
 }

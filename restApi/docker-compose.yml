@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+
+  postgresdb:
+    image: "postgres:13-alpine"
+    container_name: postgresdb
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=compose-postgres
+      - POSTGRES_PASSWORD=compose-postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  spring-boot:
+    build: .
+    container_name: spring-boot
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
+      - SPRING_DATASOURCE_USERNAME=compose-postgres
+      - SPRING_DATASOURCE_PASSWORD=compose-postgres
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgresdb
+  
+volumes:
+  db-data:
