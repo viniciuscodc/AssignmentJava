@@ -18,8 +18,8 @@ public class EventDAOImp implements EventDAO  {
 		private EntityManager entityManager;
 		
 		@Autowired
-		public EventDAOImp(EntityManager theEntityManager) {
-			entityManager = theEntityManager;
+		public EventDAOImp(EntityManager _EntityManager) {
+			entityManager = _EntityManager;
 		}
 		
 		@Override

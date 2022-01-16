@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.assignment.restAPI.entity.Event;
-import com.assignment.restAPI.entity.Payload;
 import com.assignment.restAPI.services.EventService;
 import com.assignment.restAPI.services.PayloadService;
 
@@ -78,13 +77,5 @@ public class EventController {
 		eventService.saveEvent(event);
 		
 		return event;
-	}
-	
-	@PostMapping("/event/payload")
-	public Payload createEvents(@RequestBody Payload payload) {
-		
-		payloadService.saveEvents(payload);
-
-		return payload;
 	}
 }

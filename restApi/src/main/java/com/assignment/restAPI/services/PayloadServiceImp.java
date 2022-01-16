@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.assignment.restAPI.dao.EventDAO;
+import com.assignment.restAPI.dao.PayloadDAO;
 import com.assignment.restAPI.entity.Event;
 import com.assignment.restAPI.entity.Payload;
 import com.assignment.restAPI.entity.Record;
@@ -16,11 +16,11 @@ import com.assignment.restAPI.entity.Record;
 public class PayloadServiceImp implements PayloadService {
 	
 	@Autowired
-	private EventDAO eventDAO;
+	private PayloadDAO payloadDAO;
 	
 	@Override
 	@Transactional
-	public void saveEvents(Payload payload) {
+	public List<Event> savePayloadToEvents(Payload payload) {
 		
 		// Should I use a mapper?
 		List<Record> records = payload.getRecords();
@@ -35,12 +35,12 @@ public class PayloadServiceImp implements PayloadService {
 			recordEv.setTransTms(record.getTransTms());
 			
 			events.add(recordEv);
-		});		
-        }
+			});		
+		}
 		
 		// Database save can't be parallel
-		for(Event event : events){
-			eventDAO.saveEvent(event); 
-		}	
+		payloadDAO.saveEvents(events); 
+		
+		return events;
 	}
 }

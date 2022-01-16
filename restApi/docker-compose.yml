@@ -1,16 +1,15 @@
 version: '3'
 
 services:
-
   postgresdb:
-    image: "postgres:13-alpine"
+    build: ./postgres
     container_name: postgresdb
     restart: always
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_USER=compose-postgres
-      - POSTGRES_PASSWORD=compose-postgres
+      - POSTGRES_USER=pguser
+      - POSTGRES_PASSWORD=pgpassword
     volumes:
       - db-data:/var/lib/postgresql/data
 
@@ -18,9 +17,10 @@ services:
     build: .
     container_name: spring-boot
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
-      - SPRING_DATASOURCE_USERNAME=compose-postgres
-      - SPRING_DATASOURCE_PASSWORD=compose-postgres
+      - DB_SERVER=postgresdb
+      - DB_PORT=5432
+      - POSTGRES_USER=pguser
+      - POSTGRES_PASSWORD=pgpassword
     ports:
       - 8080:8080
     depends_on:

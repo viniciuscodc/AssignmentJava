@@ -25,12 +25,12 @@ import com.assignment.restAPI.services.EventService;
 
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
-class RestApiApplicationTests {
+class EventControllerTests {
 	
 	@InjectMocks
 	EventController eventController;
 	
-	Event event;
+	private Event event;
 
 	@Mock
 	private EventService repo;
